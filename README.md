@@ -4,15 +4,15 @@ Sistemde bulunan ürünlere kullanıcıların teklif verebilmesi için bir "Tekl
 
 1) Yalnızca "Teklif Verilebilir Ürün" olarak seçilen ürünlere teklif verilebilmelidir.
 2) Teklif verilirken kullanıcıdan şu alanların girilmesi istenmelidir:
-   a) Hangi ürün için teklif istendiği
-   b) Hangi şehir için teklif istendiği
-   c) Teklif ile ilgili kullanıcının not yazabileceği bir alan (en fazla 250 karakter) (zorunlu değil)
-   d) İletişime geçmek için mail adresi
+   - a) Hangi ürün için teklif istendiği
+   - b) Hangi şehir için teklif istendiği
+   - c) Teklif ile ilgili kullanıcının not yazabileceği bir alan (en fazla 250 karakter) (zorunlu değil)
+   - d) İletişime geçmek için mail adresi
 3) Sistemde tüm teklifler liste halinde görüntülenebilmeli.
 4) Yönetici teklifi onaylarken şu alanların girilmesi istenmelidir:
-   a) Onay/Red. Teklif onaylanabilir ya da reddedilebilir. Onaylanırsa fiyat alanı mutlaka girilmelidir. Reddedildiği takdirde fiyat sisteme girilmemelidir.
-   b) Teklif ile ilgili not (en fazla 250 karakter) (zorunlu değil)
-   c) Fiyat
+   - a) Onay/Red. Teklif onaylanabilir ya da reddedilebilir. Onaylanırsa fiyat alanı mutlaka girilmelidir. Reddedildiği takdirde fiyat sisteme girilmemelidir.
+   - b) Teklif ile ilgili not (en fazla 250 karakter) (zorunlu değil)
+   - c) Fiyat
 5) Onay/Red işleminden sonra teklif için girilen mail adresine mail gönderilmelidir.
 
 Endpointler şu şekilde olmalıdır:
