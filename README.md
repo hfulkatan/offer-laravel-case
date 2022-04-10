@@ -27,7 +27,7 @@ Sizden yapılması istenenler:
 - Uygulamayı ayağa kaldırın (tablolarla birlikte)
 - Database Seeder'ları çalıştırın
 - Database tablolarını oluşturmak için migration'ları kullanın
-- <a href="mailtrap.io"><code>mailtrap.io</code></a> sitesi üzerinde ücretsiz bir hesap oluşturarak, mail ile ilgili konfigürasyonları tamamlayın. (Mailtrap kullanmak zorunda değilsiniz. Eğer kendi kullandığınız bir smtp sunucusu varsa onu da kullanabilirsiniz.)
+- <a href="https://www.mailtrap.io"><code>mailtrap.io</code></a> sitesi üzerinde ücretsiz bir hesap oluşturarak, mail ile ilgili konfigürasyonları tamamlayın. (Mailtrap kullanmak zorunda değilsiniz. Eğer kendi kullandığınız bir smtp sunucusu varsa onu da kullanabilirsiniz.)
 - OfferController controller'ını kullanarak istenen uygulamayı geliştirin
 
 Uygulamayı geliştirirken esnek davranabilirsiniz. Ekstra eklemek istediğiniz geliştirmeler olursa çekinmeyin.
