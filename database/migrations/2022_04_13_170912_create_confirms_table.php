@@ -15,10 +15,10 @@ class CreateConfirmsTable extends Migration
     {
         Schema::create('confirms', function (Blueprint $table) {
             $table->id();
-            $table->integer('offer_id');
+            $table->foreignId('offer_id')->constrained()->cascadeOnDelete();
             $table->boolean('confirm')->default(false);
-            $table->text('confirm_description', 250)->nullable();
-            $table->float('price');
+            $table->string('description', 250)->nullable();
+            $table->string('price')->nullable();
             $table->timestamps();
         });
     }

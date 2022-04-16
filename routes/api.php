@@ -19,7 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/list-offer', [OfferController::class, 'list'])->name('offer.list');
-Route::post('/create-offer', [OfferController::class, 'store'])->name('offer.store');
-Route::post('/confirm-offer', [OfferController::class, 'confirm'])->name('offer.confirm');
-
+Route::group(['as' => 'offer.', 'controller' => OfferController::class], function () {
+    Route::get('list-offer', 'list')->name('list');
+    Route::post('create-offer', 'store')->name('store');
+    Route::post('confirm-offer', 'confirm')->name('confirm');
+});

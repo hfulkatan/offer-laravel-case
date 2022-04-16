@@ -8,6 +8,7 @@ use App\Models\Confirm;
 use App\Models\Offer;
 use App\Models\Product;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class OfferController extends Controller
@@ -17,81 +18,61 @@ class OfferController extends Controller
      */
     public function list()
     {
-        $offer = Offer::with('getProduct')->get();
-        return $offer;
+        return Offer::with('product')->get();
     }
-
-
     /**
      * Yeni teklif oluşturur
      */
-    public function store(OfferRequest $request)
+    public function store(OfferRequest $request, Product $product)
     {
+        $data = array_merge($request->validated());
+        $product = Product::find($data['product_id']);
+        if(!$product->is_offerable)
         {
-            $offer = new Offer();
-            $offer->product_id = $request->product_id;
-            $offer->city = $request->city;
-            $offer->product_name = Product::where('id', $offer->product_id)->value('product_name');
-            $offer->offer_description = $request->offer_description;
-            $offer->email = $request->email;
-
-           $query = Product::where('id', $offer->product_id)->value('is_offerable');
-
-           if ($query == 1) {
-               $data = $offer->save();
-               if (!$data) {
-                   return response()->json([
-                       'status' => 400,
-                       'error' => 'Hata.'
-                   ]);
-               } else {
-                   return response()->json([
-                       'status' => 200,
-                       'message' => 'Veri Kaydedildi'
-                   ]);
-               }
-           }
-           else { return "Teklif Verilemez"; }
+            return response()->json([
+                'status' => 400,
+                'message' => 'Ürüne teklif verilemez',
+            ], Response::HTTP_BAD_REQUEST);
 
         }
+        $offer = Offer::create([
+            'product_id' => $data['product_id'],
+            'city' => $data['city'],
+            'description' => $data['description'],
+            'email' => $data['email'],
+        ]);
 
+        $offer->load('product');
+        return response()->json($offer, Response::HTTP_CREATED);
     }
-
     /**
      * Var olan teklifi onaylar
      */
-    public
-    function confirm(ConfirmRequest $request)
+    public function confirm(ConfirmRequest $request, Offer $offer)
     {
-
-        $confirm = new Confirm();
-        $confirm->confirm = $request->confirm;
-        $confirm->confirm_description = $request->confirm_description;
-        $confirm->offer_id = $request->offer_id;
-        if($confirm->confirm == 0) $confirm->price = ''; else $confirm->price = $request->price;
-        $offer = Offer::where('id', $confirm->offer_id)->value('email');
-
-        Mail::send([], [], function ($message) use ($confirm, $offer) {
-            $message->from('deneme@deneme.com');
-            $message->to($offer);
+        $data = $request->validated();
+        $confirm = Confirm::create([
+            'offer_id' => $data['offer_id'],
+            'confirm' => $data['confirm'],
+            'description' => $data['description'],
+            'price' => $data['confirm'] ? number_format($data['price'], 2) : null,
+        ]);
+        $mail_adress = Offer::find($data['offer_id']);
+        Mail::send([], [], function ($message) use ($confirm, $offer, $mail_adress) {
+            $message->from(env('MAIL_FROM_ADDRESS'));
+            $message->to($mail_adress->email);
             $message->setBody(' Onay : ' . $confirm->confirm . ' <br />
-                                Mesaj Açıklaması : ' . $confirm->confirm_description . ' <br />
-                                Mesajın Fiyatı : ' . $confirm->price . ' <br />
-                                Mesajın Gönderilme Tarihi : ' . now() . '', 'text/html');
+                                Mesaj Açıklaması : ' . $confirm->description . ' <br />
+                                Fiyat : ' . $confirm->price . ' <br />
+                                Mesajın Gönderilme Tarihi : ' . now(), 'text/html');
             $message->subject('İletişimden gönderildi');
         });
 
-        $data = $confirm->save();
-        if (!$data) {
-            return response()->json([
-                'status' => 400,
-                'error' => 'Hata'
-            ]);
-        } else {
-            return response()->json([
-                'status' => 200,
-                'message' => 'Veri Kaydedildi'
-            ]);
-        }
+        return response()->json([
+            'status' => 200,
+            'message' => 'Veri Kaydedildi',
+            'data' => $confirm,
+        ], Response::HTTP_OK);
     }
 }
+

@@ -14,6 +14,10 @@ class OfferRequest extends FormRequest
      * @return bool
      */
 
+    public function authorize()
+    {
+        return true;
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,10 +27,10 @@ class OfferRequest extends FormRequest
     {
         return [
 
-            'product_id' => 'required',
-            'city' => 'required|',
-            'offer_description' => 'max:250|nullable',
-            'email' => 'required|email',
+            'product_id' => ['required'],
+            'city' => ['required'],
+            'description' => ['max:250', 'nullable'],
+            'email' => ['required', 'email'],
         ];
     }
 

@@ -9,12 +9,17 @@ class Offer extends Model
 {
     use HasFactory;
 
-    protected $hidden = ['created_at', 'updated_at', 'product_id', 'product_name'];
+    protected $fillable = [
+        "product_id",
+        'city',
+        'offer_description',
+        'email',
+    ];
 
+    protected $hidden = ['created_at', 'updated_at', 'product_id'];
 
-    public function getProduct()
-    {
-        return $this->hasOne('App\Models\Product', 'id', 'product_id');
+    public function product() {
+        return $this->belongsTo(Product::class);
     }
 
 }

@@ -14,7 +14,10 @@ class ConfirmRequest extends FormRequest
      *
      * @return bool
      */
-
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -25,9 +28,10 @@ class ConfirmRequest extends FormRequest
     {
 
         return [
-            'confirm' => 'required|boolean',
-            'confirm_description' => 'max:250|nullable',
-            'price' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            'confirm' => ['required', 'boolean'],
+            'description' => ['max:250', 'nullable'],
+            'price' => ['required', 'regex:/^\d{1,13}(\.\d{1,4})?$/'],
+            'offer_id' => ['required'],
 
         ];
     }
@@ -35,9 +39,9 @@ class ConfirmRequest extends FormRequest
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors()
         ]));
     }
 

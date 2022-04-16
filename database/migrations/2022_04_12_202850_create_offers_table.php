@@ -15,12 +15,11 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->integer('product_id');
-            $table->string('product_name');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->string('city');
-            $table->text('offer_description', 250)->nullable();
+            $table->string('description', 250)->nullable();
             $table->string('email');
+            $table->timestamps();
 
         });
     }
